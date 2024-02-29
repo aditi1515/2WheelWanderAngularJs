@@ -1,0 +1,130 @@
+
+  <section class="signUp-container">
+   <!-- <div class="img-container">
+        <img src="./assets/images/homePageRental.png" class="image">
+      </div> -->
+      <link rel="stylesheet" href="../signup/signup.css" />
+   <form ng-submit="signUp(signupForm)" name="signupForm" class="signUp-form-container signUp-form" novalidate>
+    <h2>Welcome to <span>2WheelWander</span></h2>
+    <h4>
+     Commuting made <span>Easy</span>, <span>Affordable</span> and
+     <span>Quick</span>
+    </h4>
+    <div class="input-field">
+     <label for="fname">First Name :</label>
+     <input
+      type="text"
+      name="fname"
+      ng-model="signupformdata.firstName"
+      id="fname"
+      ng-required="true"
+      ng-minlength="3"
+     />
+  
+     <div class="error">
+      <span
+       ng-show="signupForm.fname.$error.required && signupForm.fname.$touched"
+       >* First name is required</span
+      >
+      <span
+       ng-show="signupForm.fname.$error.minlength && signupForm.fname.$touched"
+       >* First name should be atleast 3 characters</span
+      >
+     </div>
+    </div>
+
+    <div class="input-field">
+     <label for="lname">Last Name (optional) :</label>
+     <input type="text" ng-model="signupformdata.lastName" name="lname" id="lname" />
+     <div class="error"></div>
+    </div>
+    <div class="input-field">
+     <label for="mnum">Mobile No. :</label>
+     <input
+      type="number"
+      ng-model="signupformdata.mobileNumber"
+      name="mnum"
+      id="mnum"
+      ng-required="true"
+      ng-pattern="/^[0-9]{10}$/"
+     />
+    
+     <div class="error">
+      <span
+       ng-show="signupForm.mnum.$error.required && signupForm.mnum.$touched"
+       >* Mobile number is required</span
+      >
+      <span ng-show="signupForm.mnum.$error.pattern && signupForm.mnum.$touched"
+       >* Mobile number should be 10 digits</span
+      >
+     </div>
+    </div>
+
+    <div class="input-field">
+     <label for="email">Email :</label>
+     <input type="email" ng-model="signupformdata.email" name="email" id="email" ng-required="true" />
+     <div class="error">
+      <span
+       ng-show="signupForm.email.$error.required && signupForm.email.$touched"
+       >* Email is required</span
+      >
+      <span ng-show="signupForm.email.$error.email && signupForm.email.$touched"
+       >* Enter a valid email</span
+      >
+
+      <span ng-show = "userExistsError">
+        * User already exists
+      </span>
+     </div>
+    </div>
+
+    <div class="input-field">
+     <label for="password">Password :</label>
+     <input
+      type="password"
+      ng-model="signupformdata.password"
+      name="password"
+      id="password"
+      password-validate
+      ng-required="true"
+     />
+    
+     <div class="error">
+      <span
+       ng-show="signupForm.password.$error.required && signupForm.password.$touched"
+       >* Password is required</span
+      >
+      <ul ng-repeat="error in signupForm.password.$errorList" class="error-list" >
+        <li>* {{error}}</li>
+      </ul>
+    
+    </div>
+
+    <div class="input-field">
+     <label for="confirm-pass">Confirm Password :</label>
+     <input
+      type="password"
+      ng-model="signupformdata.confirmPassword"
+      name="confirmPass"
+      id="confirm-pass"
+      confirm-password-validate
+      compare-with={{signupForm.password}}
+      ng-required="true"
+     />
+  
+     <div class="error" >
+      <span
+       ng-show="signupForm.confirmPass.$error.required && signupForm.confirmPass.$touched"
+       >* Confirm password is required</span
+      >
+      <span ng-show="signupForm.confirmPass.$error.confirmPasswordValidate && !signupForm.confirmPass.$error.required " >
+        * Passwords do not match
+      </span>
+     </div>
+    </div>
+<!-- {{signupForm.$valid}} -->
+    <button ng-disabled={{!signupForm.$valid}} type="submit" class={{signupForm.$valid?"submit-btn":"submit-btn-disabled"}}>Sign Up</button>
+  </form>
+  <snackbar></snackbar>
+  </section>
+

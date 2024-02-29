@@ -1,0 +1,92 @@
+<section class="analytics-section">
+ <link rel="stylesheet" href="../admin/analytics.css" />
+ <h1>Analytics</h1>
+ <div class="analytics-container">
+  <div class="figures-container">
+   <div class="figures">
+    <h3>Total Revenue (Rs)</h3>
+    <p>{{figures.revenue}}</p>
+   </div>
+   <div class="figures">
+    <h3>Total Users</h3>
+    <p>{{figures.users}}</p>
+   </div>
+   <div class="figures">
+    <h3>Total Bookings</h3>
+    <div>
+     <div>
+      <span>Completed : </span>
+      <p>{{figures.bookingCount.completed}}</p>
+     </div>
+     <div>
+      <span>Pending : </span>
+      <p>{{figures.bookingCount.pending}}</p>
+     </div>
+    </div>
+   </div>
+   <div class="figures">
+    <h3>Total Vehicles</h3>
+    <p>{{figures.vehicleCount}}</p>
+   </div>
+  </div>
+ </div>
+ <div class="chart-container">
+  <div class="bike-scooter-chart">
+   <h3>Most Booked Vehicle Type</h3>
+   <canvas id="bike-scooter-canvas"> </canvas>
+  </div>
+  <div class="liked-brands-chart">
+   <h3>Most Booked Brands</h3>
+   <canvas id="liked-brands-canvas"> </canvas>
+  </div>
+ </div>
+ <div class="chart-container-2">
+  <div class="liked-cities-chart">
+   <h3>City Wise Bookings</h3>
+   <canvas id="liked-cities-canvas"> </canvas>
+  </div>
+  <div class="user-bookings-chart">
+   <h3>Bookings Rate</h3>
+   <canvas id="user-bookings-canvas"> </canvas>
+  </div>
+ </div>
+ <div class="chart-container-3">
+  <div class="revenue-chart">
+   <div class="revenue-chart-heading">
+    <h3>Revenue Analysis</h3>
+    <p>* Only Completed Bookings</p>
+   </div>
+
+   <select class="revenue-select">
+    <option value="day-wise">Day Wise</option>
+    <option value="month-wise">Month Wise</option>
+    <option value="year-wise">Year Wise</option>
+   </select>
+   <canvas id="revenue-chart-canvas"> </canvas>
+  </div>
+ </div>
+
+ <div class="top-users-table-container">
+  <h3>Top Users</h3>
+  <table>
+   <thead>
+    <tr>
+     <th>User ID</th>
+     <th>First Name</th>
+     <th>Last Name</th>
+     <th>Email</th>
+     <th>Booking Count</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr ng-repeat="topUser in topUsers">
+     <td>{{ topUser[1].user.userId }}</td>
+     <td>{{ topUser[1].user.firstname }}</td>
+     <td>{{ topUser[1].user.lastname }}</td>
+     <td>{{ topUser[1].user.email }}</td>
+     <td>{{ topUser[1].bookingCount }}</td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+</section>

@@ -1,0 +1,188 @@
+
+     
+        <section class="vehicles-section">
+          <link rel="stylesheet" href="../admin/managevehicles.css"/>
+            <div class="add-vehicles-container">
+              <h1>Manage Vehicles</h1>
+              <div class="addUser-container">
+                <div id="vehicleForm-dialog" ng-show = "showDialogVal">
+                  <form class="vehicle-form-container-main" name = "addVehicleForm" ng-submit = "addVehicleFormSubmit(addVehicleForm)"  >
+
+                    
+
+                    <h2>Welcome to <span>2WheelWander</span></h2>
+
+                    <img src={{vehicleFormData.vimg}} alt="">
+
+                    <div ng-show="!vehicleEditEnabled" class="input-field-vehicle">
+                      <labael for="vType">Vehicle Type :</labael>
+                      <p>
+                        <input type="radio" id="bike" name="vtype" value="bike"  ng-required ="true" ng-model = "vehicleFormData.vType"/>
+                        <label for="test1">Bike</label>
+                      </p>
+                      <p>
+                        <input type="radio" id="scooter" name="vtype" value="scooter" ng-required ="true" ng-model = "vehicleFormData.vType"/>
+                        <label for="test2">Scooter</label>
+                      </p>
+                      
+                      <div class="error">
+                        <span ng-show = "addVehicleForm.vtype.$error.required && addVehicleForm.vtype.$touched" >
+                            * Vehicle Type is required
+                      </span></div>
+                    </div>
+                    <div ng-show="!vehicleEditEnabled" class="input-field">
+                      <label for="vbrand">Vehicle Brand :</label>
+                      <input type="text" name="vbrand" id="vbrand" ng-required = "true" ng-model = "vehicleFormData.vbrand" />
+                        
+                      <div class="error">
+                        <span ng-show = "addVehicleForm.vbrand.$error.required && addVehicleForm.vbrand.$touched" >
+                            * Vehicle brand is required
+                      </span></div>
+                    </div>
+                    <div ng-show="!vehicleEditEnabled" class="input-field">
+                      <label for="vmodel">Vehicle Model :</label>
+                      <input type="text" name="vmodel" id="vmodel" ng-required = "true" ng-model ="vehicleFormData.vmodel"/>
+                      <div class="error">
+                        <span ng-show = "addVehicleForm.vmodel.$error.required && addVehicleForm.vmodel.$touched" >
+                            * Vehicle Model is required
+                      </span></div>
+                    </div>
+                    <div ng-show="!vehicleEditEnabled" class="input-field">
+                      <label for="vnum">Vehicle Number :</label>
+                       <input type="text" name="vnum" id="vnum" ng-required = "true" ng-model ="vehicleFormData.vnum"/> 
+                       <div class="error">
+                        <span ng-show = "addVehicleForm.vnum.$error.required && addVehicleForm.vnum.$touched" >
+                            * Vehicle Number is required
+                      </span></div>
+                    </div>
+                    <div ng-if="!vehicleEditEnabled" ng-show="!vehicleEditEnabled" class="input-field" >
+                      <label for="vimg">Vehicle Image :</label>
+                      <input type="file" name="vimg" id="vimg"  accept=".jpg,.png " required onchange="angular.element(this).scope().uploadImage(this.files)"/>
+                      <div class="error">
+                        <span ng-show = "addVehicleForm.vimg.$error.required && addVehicleForm.vimg.$touched" >
+                            * Vehicle Image is required
+                      </span></div>
+                    </div>
+                    <div ng-show="!vehicleEditEnabled" class="input-field">
+                      <label for="location">Location :</label>
+                      <select class="locationSelect"ng-model="vehicleFormData.location" required >
+                        <option value="" disabled selected>Select city</option>
+                       <option ng-repeat = "location in locations" value ='{{location.city}}'>{{location.city}}</option>
+                      </select>
+                    </div>
+                    <div class="input-field">
+                      <label for="price">Price per hour :</label>
+                      <input type="number" name="priceHour" min="1" max="1000" id="priceHour" ng-required = "true" ng-model ="vehicleFormData.price" />
+                      <div class="error">
+                        <span ng-show = "addVehicleForm.priceHour.$error.required && addVehicleForm.priceHour.$touched" >
+                            * Price is required
+                      </span>
+                      <span ng-show="addVehicleForm.priceHour.$dirty && addVehicleForm.priceHour.$error.min">
+                        * Price should be greater than 0
+                      </span>
+                      <span ng-show="addVehicleForm.priceHour.$dirty && addVehicleForm.priceHour.$error.max">
+                        * Price should be less than 1000
+                      </span>
+                    </div>
+                    </div>
+            
+                    <div class="input-field">
+                      <label for="nightPrice">Price (10pm - 6am) :</label>
+                      <input type="number" min="1" max="1000" name="nightPrice" id="nightPrice" ng-required = "true" ng-model ="vehicleFormData.nightPrice" />
+                      <div class="error">
+                      
+                        <span ng-show = "addVehicleForm.nightPrice.$error.required && addVehicleForm.nightPrice.$touched" >
+                            * Price is required
+                      </span>
+                      <span ng-show="addVehicleForm.nightPrice.$touched && addVehicleForm.nightPrice.$error.min">
+                        * Price should be greater than 0
+                      </span>
+                      <span ng-show="addVehicleForm.nightPrice.$touched && addVehicleForm.nightPrice.$error.max">
+                        * Price should be less than 1000
+                      </span>
+                    </div>
+                    </div>
+            
+                    
+                   
+                    <div class="form-btn-container">
+                      <button  ng-disabled={{!addVehicleForm.$valid}} type="submit" class={{addVehicleForm.$valid?"submit-btn":"submit-btn-disabled"}}>{{!vehicleEditEnabled ? "Add Vehicle" : "Save Vehicle"}}</button>
+                      <button  type="button" class="closeForm-btn" ng-click = 'closeDialog()'>Close</button>
+                      
+                    </div>
+                  </form>
+                  
+                </div>
+                <!-- <div id="snackbar">Vehicle added successfully</div>
+                 -->
+                <button class="addVehicle-btn" ng-click = "showDialog()"> Add Vehicle</button>
+              </div>
+            </div>
+           
+            <confirm-dialog ng-show="showVehicleDeleteDialogVal" title="Are you sure to delete this vehicle?"
+              on-confirm="deleteVehicle(vehicleSelectedForDelete._id)" on-cancel="closeVehicleDeleteDialog()"
+            ></confirm-dialog>
+            <div class="displayVehicles-container">
+              <div class="search">
+                <label for="search">Search By Model</label>
+                <input type="text" placeholder="Search" ng-model="searchVehicleData.vmodel" />
+              </div>
+              <div class="vehicles-card-container" >
+                <table>
+                  <thead>
+                    <th>Vehicle Image</th>
+                    <th>Vehicle Type</th>
+                    <th>Vehicle Brand</th>
+                    <th>Vehicle Model</th>
+                    <th>Vehicle Number</th>
+                    <th>Price</th>
+                    <th>Price (10pm-6am)</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat = 'vehicle in vehicles | filter:searchVehicleData'>
+                      <td><img ng-src="{{vehicle.vimg}}"/></td>
+                      <td>{{vehicle.vType}}</td>
+                      <td>{{vehicle.vbrand}}</td>
+                      <td>{{vehicle.vmodel}}</td>
+                      <td>{{vehicle.vnum}}</td>
+                      <td>{{vehicle.priceHour}}</td>
+                      <td>{{vehicle.nightPrice}}</td>
+                      <td>{{vehicle.location}}</td>
+                      <td>
+                        <button class='edit-btn' ng-click="showVehicleEditDialog(vehicle)" ng-disabled="isVehicleActive(vehicle._id)"
+                        >Edit</button>
+                        
+                        <button class='delete-btn' ng-if="vehicleStatusMap" ng-disabled="isVehicleActive(vehicle._id)"  ng-click = "showVehicleDeleteDialog(vehicle)"
+                        >Delete</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- <div class="vehicle-card" ng-repeat = 'vehicle in vehicles' >
+                  <div class="imgHeading-container">  <div ><img ng-src="{{vehicle.vimg}}"/></div> <p>{{vehicle.vbrand}} {{vehicle.vmodel}}</p></div>
+                 
+                
+                  <div class="price-container">
+                    <div class="price2"><p>Hourly Price : <span>Rs {{vehicle.price}}/hr</span></p>  </div>
+                
+                    <div class="price2">
+                      <p>(10pm-6am) : <span>Rs {{
+                        vehicle.nightPrice
+                      }}/hr</span> </p>
+                     
+                    </div>
+                  </div>
+                  <div class="cards-btn-container">
+                    <button class='bookNow-btn'
+                    >Edit</button>
+                    <button class='bookNow-btn' ng-click = "deleteVehicle(vehicle._id)"
+                    >Delete</button>
+                  </div>
+                  
+                </div> -->
+              </div>
+            </div>
+            </section>

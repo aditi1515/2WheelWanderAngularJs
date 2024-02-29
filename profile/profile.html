@@ -1,0 +1,114 @@
+<section class="home-container">
+ <link rel="stylesheet" href="../profile/profile.css" />
+ <div class="profileLeft-container">
+  <!-- <img src="./assets/images/profileBG.png" class="image"> -->
+  <div class="profile-container">
+   <div class="details">
+    <h1>Profile Details</h1>
+    <div class="profile-details">
+     <div class="profile-details-container">
+      <div class="profile-details-label">First Name :</div>
+      <div class="profile-details-value">{{currentUser.firstName}}</div>
+     </div>
+     <div ng-if="currentUser.lastName != undefined" class="profile-details-container">
+      <div class="profile-details-label">Last Name :</div>
+      <div class="profile-details-value">{{currentUser.lastName}}</div>
+     </div>
+     <div class="profile-details-container">
+      <div class="profile-details-label">Mobile Number :</div>
+      <div class="profile-details-value">{{currentUser.mobileNumber}}</div>
+     </div>
+     <div class="profile-details-container">
+      <div class="profile-details-label">Email :</div>
+      <div class="profile-details-value">{{currentUser.email}}</div>
+   </div>
+   <button ng-click="showChangePasswordDialog()" class="change-password">
+    Change Password
+   </button>
+
+   <div ng-show="showChangePasswordDialogVal" id="changePass-dialog">
+    <form
+     name="passwordChangeForm"
+     class="pass-container"
+     ng-submit="changePassword(passwordChangeForm)"
+    >
+     <div class="input-field">
+      <label for="curr-pass">Current Password :</label>
+      <input
+       ng-model="changePasswordFormData.oldPassword"
+       type="password"
+       name="curr-pass"
+       id="curr-pass"
+       required
+      />
+      <div class="error">
+       <span
+        ng-show="passwordChangeForm.curr-pass.$error.required && passwordChangeForm.curr-pass.$touched"
+        >*Old Password is required</span
+       >
+       <span ng-show="incorrectPasswordError"> * Incorrect Password </span>
+      </div>
+     </div>
+     <div class="input-field">
+      <label for="new-pass">New Password :</label>
+      <input
+       ng-model="changePasswordFormData.newPassword"
+       type="password"
+       password-validate
+       name="newPassword"
+       id="new-pass"
+       required
+      />
+      <div class="error">
+       <span
+        ng-show="passwordChangeForm.newPassword.$error.required && passwordChangeForm.newPassword.$touched"
+        >* Password is required</span
+       >
+
+       <ul
+        ng-repeat="error in passwordChangeForm.newPassword.$errorList"
+        class="error-list"
+       >
+        <li>* {{error}}</li>
+       </ul>
+      </div>
+     </div>
+     <div class="input-field">
+      <label for="confirm-new-pass">Confirm New Password :</label>
+      <input
+       ng-model="changePasswordFormData.newPasswordConfirm"
+       type="password"
+       name="confirmPass"
+       id="confirm-new-pass"
+       confirm-password-validate
+       compare-with="{{passwordChangeForm.newPassword}}"
+       ng-required="true"
+      />
+      <div class="error">
+       <span
+        ng-show="passwordChangeForm.confirmPass.$error.required && passwordChangeForm.confirmPass.$touched"
+        >* Confirm password is required</span
+       >
+       <span
+        ng-show="passwordChangeForm.confirmPass.$error.confirmPasswordValidate && !passwordChangeForm.confirmPass.$error.required "
+       >
+        * Passwords do not match
+       </span>
+      </div>
+     </div>
+     <div class="btn-container-2">
+      <button class="pass-change" type="submit">Confirm</button>
+      <button
+       class="pass-cancel"
+       type="button"
+       ng-click="closeChangePasswordDialog()"
+      >
+       Cancel
+      </button>
+     </div>
+    </form>
+   </div>
+   <div id="passChange-snackbar"></div>
+  </div>
+ </div>
+</section>

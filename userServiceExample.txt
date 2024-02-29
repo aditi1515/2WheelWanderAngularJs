@@ -1,0 +1,177 @@
+//// USER SERVICE
+
+function userService($q, IndexedDBService) {
+ var CURRENT_USER = "currentUser";
+
+ var userSchema = {
+  type: "object",
+  properties: {
+   firstName: { type: "string", minLength: 2, required: true },
+   lastName: { type: "string", required: true },
+   email: { type: "string", format: "email", required: true },
+   password: { type: "string", minLength: 6, required: true },
+   mobileNumber: { type: "string", minLength: 10, required: true },
+   role: { type: "string", enum: ["admin", "user"], required: true },
+  },
+ };
+//to handle local storage functions
+ this.setCurrentUser = function (user) {
+  localStorage.setItem(CURRENT_USER, JSON.stringify(user));
+ };
+
+ this.getCurrentUSer = function () {
+  return JSON.parse(localStorage.getItem(CURRENT_USER));
+ };
+
+ this.removeCurrentUser = function () {
+  localStorage.removeItem(CURRENT_USER);
+ };
+
+
+//to check user is logged in or not
+ this.isLoggedIn = function () {
+  return this.getCurrentUSer() !== null;
+ };
+
+
+//to check user is admin 
+ this.isAdmin = function () {
+  return this.getCurrentUSer() && this.getCurrentUSer().role === "admin";
+ };
+
+
+//to check the user against the defined userschema
+ this.validateUserSchema = function (user) {
+  var validationResult = {
+   isValid: true,
+   errors: [],
+  };
+
+  for (var key in userSchema) {
+   if (userSchema.properties.hasOwnProperty(key)) {
+    var constraints = userSchema.properties[key];
+    if (
+     constraints.minLength &&
+     (!user[key] || user[key].length < constraints.minLength)
+    ) {
+     validationResult.isValid = false;
+     validationResult.errors.push({
+      property: key,
+      message: "Minimum length not met.",
+     });
+    }
+
+    if (constraints.enum && constraints.enum.indexOf(user[key]) === -1) {
+     validationResult.isValid = false;
+     validationResult.errors.push({
+      property: key,
+      message: "Value not in enum.",
+     });
+    }
+   }
+  }
+
+  for (var userKey in user) {
+   if (!userSchema.properties.hasOwnProperty(userKey)) {
+    validationResult.isValid = false;
+    validationResult.errors.push({
+     property: userKey,
+     message: "Property not defined in schema.",
+    });
+   }
+  }
+  return validationResult;
+ };
+
+ this.addUser = function (user) {
+  var deferred = $q.defer();
+  var validationResult = this.validateUserSchema(user);
+  if (!validationResult.isValid) {
+   deferred.reject({
+    success: false,
+    message: "Schema validation failed",
+    errors: validationResult.errors,
+   });
+   return deferred.promise; 
+  }
+
+  IndexedDBService.openDatabase()
+   .then(function (db) {
+    return IndexedDBService.getAllFromObjectStore(db, "users").then(function (
+     users
+    ) {
+     if (users.find((u) => u.email === user.email)) {
+      deferred.reject({
+       success: false,
+       message: "User already exists",
+      });
+     } else return db;
+    });
+   })
+   .then(function (db) {
+    if (!db) return;
+    return IndexedDBService.addToObjectStore(db, "users", user);
+   })
+   .then(function () {
+    deferred.resolve({
+     success: true,
+     message: "User added successfully",
+    });
+   })
+   .catch(function (err) {
+    console.error("Error adding user to database: ", err);
+    deferred.reject({
+     success: false,
+     message: "Error adding user to database",
+    });
+   });
+
+  return deferred.promise; // Return the promise from the deferred object
+ };
+}
+
+twoWheelWanderApp.service("UserService", [
+ "$q",
+ "IndexedDBService",
+ userService,
+]);
+
+
+
+//// SIGNUP CONTROLLER
+
+
+
+function signupController($scope, $location, UserService) {
+ $scope.signUp = function (form) {
+  if (form.$valid) {
+   // Prepare the data object to be submitted
+   var userData = {
+    firstName: $scope.firstName,
+    lastName: $scope.lastName,
+    mobileNumber: $scope.mobileNumber,
+    email: $scope.email,
+    password: $scope.password,
+   };
+
+
+   console.log("Form Data:", userData);
+
+ 
+   UserService.addUser(userData)
+    .then(function (response) {
+     console.log("User added successfully:", response);
+     if (response.success) {
+      $location.path("/");
+     } else {
+      console.error("Error adding user:", response.message);
+     }
+    })
+    .catch(function (err) {
+     console.error("Error adding user:", err);
+    });
+  } else {
+   console.error("Form is invalid. Please correct the errors.");
+  }
+ };
+}

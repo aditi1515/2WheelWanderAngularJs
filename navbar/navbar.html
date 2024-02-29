@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../navbar/navbar.css">
+  <title>2WWAngular</title>
+ </head>
+ <body >
+ 
+ <nav class="navbar-container" ng-controller="navbarController">
+  <div class="nav-logo"><a href="#!">2WheelWander</a></div>
+  <ul class="nav-options-container loggedOut-navbar-options" ng-show="!isLoggedIn()" >
+  <li class="nav-options"> <a ng-href="#!signIn"  class="nav-links">Sign in</a> </li>
+  <li class="nav-options"> <a href="#!signUp"   class="nav-links">Sign up</a> </li>
+  </ul>
+
+  <ul class="nav-options-container loggedIn-navbar-options " ng-show="!isAdmin() && isLoggedIn()">
+    <li class="nav-options "><div class="user-img-container home"><img src="./assets/images/home.png" class="user-img"></div></li>
+
+    <a class="navbar-btn" href="#!profile">View Profile</a>
+        <a class="navbar-btn" href="#!orders">View Orders</a>
+        <button ng-click="logout()" id = "logOut-link">Log Out</>
+        
+
+   
+   
+   
+  </ul>
+  <ul class="nav-options-container loggedIn-navbar-options admin" ng-show="isAdmin() && isLoggedIn()">
+  
+        <a class="navbar-btn" href="#!profile">View Profile</a>
+        
+        <a class="navbar-btn" href="#!manageVehicles">Manage Vehicles</a>
+        <a class="navbar-btn" href="#!analytics">Analytics</a>
+        <a class="logout-btn" href="#"  id = "logOut-link" ng-click="logout()">Logout</a>
+        
+  
+  </ul>
+  </div> 
+  
+</nav>     
+ </body>
+</html>

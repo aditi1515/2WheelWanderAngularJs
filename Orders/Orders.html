@@ -1,0 +1,115 @@
+<section>
+ <link rel="stylesheet" href="../Orders/Orders.css" />
+ <div class="profileInfo-container">
+  <div class="order-container">
+   <h1>ORDER HISTORY</h1>
+
+   <div class="tab-container">
+    <div
+     ng-click="setActiveTab(tabs.ONGOING_ORDERS)"
+     ng-class="{ 'active': activeTab === tabs.ONGOING_ORDERS }"
+    >
+     Ongoing Orders
+    </div>
+
+    <div
+     ng-click="setActiveTab(tabs.ACTIVE_ORDERS)"
+     ng-class="{ 'active': a  }"
+    >
+     Active Orders
+    </div>
+    <div
+     ng-click="setActiveTab(tabs.PASSIVE_ORDERS)"
+     ng-class="{ 'active': activeTab === tabs.PASSIVE_ORDERS }"
+    >
+     Passive Orders
+    </div>
+   </div>
+
+   <div class="table-container" ng-show="activeTab === tabs.ONGOING_ORDERS">
+    <table>
+     <thead>
+      <th>Vehicle Model</th>
+      <th>Type</th>
+      <th>Location</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+     </thead>
+     <tbody class="ongoing-table">
+      <tr ng-repeat="row in categorizedOrders.ongoingOrders">
+       <td>{{ row.vehicleBrand }} {{ row.vehicleModel }}</td>
+       <td>{{ row.vehicleType }}</td>
+       <td>{{ row.location }}</td>
+       <td>{{ row.start_date }}, {{ row.start_time }}</td>
+       <td>{{ row.end_date }}, {{ row.end_time }}</td>
+      </tr>
+      <!-- if no orders then show no orders found -->
+      <tr ng-show="categorizedOrders.ongoingOrders.length === 0">
+       <td colspan="5">No orders found</td>
+      </tr>
+     </tbody>
+    </table>
+   </div>
+
+   <div class="table-container" ng-show="activeTab === tabs.ACTIVE_ORDERS">
+    <table>
+     <thead>
+      <th>Vehicle Model</th>
+      <th>Type</th>
+      <th>Location</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Action</th>
+     </thead>
+     <tbody class="active-table">
+      <tr ng-repeat="row in categorizedOrders.activeOrders">
+       <td>{{ row.vehicleBrand }} {{ row.vehicleModel }}</td>
+       <td>{{ row.vehicleType }}</td>
+       <td>{{ row.location }}</td>
+       <td>{{ row.start_date }}, {{ row.start_time }}</td>
+       <td>{{ row.end_date }}, {{ row.end_time }}</td>
+       <td>
+        <button class="cancel-btn" ng-click="showCancelOrderDialog(row)">
+         Cancel
+        </button>
+       </td>
+      </tr>
+      <tr ng-show="categorizedOrders.activeOrders.length === 0">
+        <td colspan="5">No orders found</td>
+       </tr>
+     </tbody>
+     <confirm-dialog
+      ng-show="showCancelOrderDialogVal"
+      title="Are you sure to delete this vehicle?"
+      on-confirm="cancelOrder()"
+      on-cancel="hideCancelOrderDialog()"
+     ></confirm-dialog>
+    </table>
+   </div>
+   <div class="table-container" ng-show="activeTab === tabs.PASSIVE_ORDERS">
+    <table>
+     <thead>
+      <th>Vehicle Model</th>
+      <th>Type</th>
+      <th>Location</th>
+      <th>Start Date</th>
+      <th>End Date</th>
+     </thead>
+     <tbody class="passive-table">
+      <tr ng-repeat="row in categorizedOrders.passiveOrders">
+       <td>{{ row.vehicleBrand }} {{ row.vehicleModel }}</td>
+       <td>{{ row.vehicleType }}</td>
+       <td>{{ row.location }}</td>
+       <td>{{ row.start_date }}, {{ row.start_time }}</td>
+       <td>{{ row.end_date }}, {{ row.end_time }}</td>
+      </tr>
+      <tr ng-show="categorizedOrders.passiveOrders.length === 0">
+        <td colspan="5">No orders found</td>
+       </tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+ </div>
+ <snackbar></snackbar>
+</section>

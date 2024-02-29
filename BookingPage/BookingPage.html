@@ -1,0 +1,109 @@
+<div>
+ <link rel="stylesheet" href="../BookingPage/bookingPage.css" />
+ <div class="available-vehicles">
+  <div class="dateTime-picker">
+   <div class="form-container">
+    <form ng-submit="searchBooking()" name="bookingSearchForm">
+     <select
+      class="locationSelect"
+      ng-model="bookingSearch.location"
+      ng-options="location.city as location.city for location in locations"
+      required
+     >
+      <!-- <option value="" disabled selected>Select city</option> -->
+     </select>
+
+     <!-- {{availableVehicles}} -->
+     <div>
+      <label for="start-date">Start Date & Time :</label>
+      <input
+       ng-model="bookingSearch.startDateTime"
+       min="{{startDateTimeMinVal}}"
+       type="datetime-local"
+       name="start-date"
+       id="start-date-time"
+      />
+     </div>
+     <!-- {{endDateTimeMinVal}} -->
+     <div>
+      <label for="end-date">End Date & Time :</label>
+      <input
+       ng-model="bookingSearch.endDateTime"
+       min="{{endDateTimeMinVal}}"
+       type="datetime-local"
+       name="end-date"
+       id="end-date-time"
+      />
+     </div>
+
+     <button type="submit">Find a Ride</button>
+    </form>
+    <div class="error">
+     <span ng-show="bookingSearchTimeDifferenceError" style="color: red"
+      >Start and end time should be atleast 30 mins apart</span
+     >
+    </div>
+   </div>
+   <div id="bookingPage-dates-snackbar"></div>
+  </div>
+
+  <div class="vehicles-card-container">
+   <div class="vehicle-card" ng-repeat="vehicle in availableVehicles">
+    <div class="imgHeading-container">
+     <div>
+      <img src="{{vehicle.vimg}}" />
+     </div>
+     <p>{{vehicle.vbrand}} {{vehicle.vmodel}}</p>
+    </div>
+    <div class="price-container">
+     <div class="price1">
+      <p>Rs {{vehicle.price}}/hr</p>
+      <p>Rs {{vehicle.nightPrice}}/hr <span>(10pm-6am)</span></p>
+     </div>
+
+     <div class="price2">
+      <p>Total amt :</p>
+      <span>Rs {{vehicle.amount}}</span>
+     </div>
+    </div>
+
+    <button class="bookNow-btn" ng-click="showBookingFinalDialog(vehicle)">
+     Book Now
+    </button>
+   </div>
+  </div>
+  <div
+   ng-show="showbookingFinalDialogVal"
+   id="displayBooking-dialog"
+   class="displayBooking-dialog"
+  >
+   <div class="displayBooking-order">
+    <h2>Welcome to <span>2WheelWander</span></h2>
+    <div class="orderImg-container">
+     <div class="image"><img src="{{vehicleToOrder.vimg}}" /></div>
+
+     <p>{{vehicleToOrder.vbrand}} {{vehicleToOrder.vmodel}}</p>
+    </div>
+
+    <div class="dateTime-container">
+     <p>
+      Pickup Date :{{vehicleToOrder.startDate}}, {{vehicleToOrder.startTime}}
+     </p>
+     <p>
+      Dropoff Date : {{vehicleToOrder.endDate}} ,{{vehicleToOrder.endTime}}
+     </p>
+    </div>
+    <p>Total Amount : {{vehicleToOrder.amount}}</p>
+    <div class="btn-container">
+     <button class="confirm-btn" ng-click="bookVehicle()">Confirm</button>
+     <button class="cancel-btn" ng-click="hideBookingFinalDialog()">
+      Cancel
+     </button>
+    </div>
+   </div>
+  </div>
+
+  <dialog id="displayBooking-dialog" class="displayBooking-dialog"></dialog>
+  <snackbar></snackbar>
+ </div>
+</div>

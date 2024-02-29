@@ -1,0 +1,9 @@
+<div
+ class="snackbar"
+ ng-show="SnackbarService.showSnackbar"
+ ng-click="SnackbarService.hideOnTap()"
+ ng-class="SnackbarService.color"
+>
+ <link rel="stylesheet" href="./components.css" />
+ {{ SnackbarService.message }}
+</div>

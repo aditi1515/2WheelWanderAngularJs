@@ -1,0 +1,69 @@
+<section class="home-container">
+ <link rel="stylesheet" href="../home/home.css" />
+ <div class="img-container">
+  <img src="./assets/images/homePageRental.png" class="image" />
+ </div>
+ <div class="dateTimepicker-container">
+  <form
+   class="form-container"
+   name="bookingSearchForm"
+   ng-submit="searchBooking()"
+  >
+   <h1>Commuting Made <span>Easy</span></h1>
+   <h1><span>Affordable</span> and <span>Quick</span></h1>
+   <label for="location">Location :</label>
+   <select
+    class="locationSelect"
+    ng-model="bookingSearch.location"
+    ng-options="location.city as location.city for location in locations"
+    required
+   >
+    <!-- <option value="" disabled selected>Select city</option> -->
+   </select>
+   <div></div>
+   <label for="start-date">Start Date & Time :</label>
+   <input
+    type="datetime-local"
+    name="startDate"
+    ng-model="bookingSearch.startDateTime"
+    id="start-date"
+    min="{{startDateTimeMinVal}}"
+   />
+   
+   <div class="error">
+    <span ng-show="bookingSearchForm.startDate.$error.min" style="color: red"
+     >* Start Date & Time should be atleast 15 minutes from now</span
+    >
+   </div>
+   <label for="end-date">End Date & Time :</label>
+
+   <input
+    type="datetime-local"
+    name="endDate"
+    ng-model="bookingSearch.endDateTime"
+    id="end-date"
+    min="{{endDateTimeMinVal}}"
+   />
+   <div class="error">
+    <span ng-show="bookingSearchForm.endDate.$error.min" style="color: red"
+     >* End Date & Time should be atleast 45 minutes from now</span
+    >
+    <span
+     ng-show="bookingSearchForm.endDate.$error.dateDifference"
+     style="color: red"
+     >* End Date & Time should be atleast 30 minutes from Start Date &
+     Time</span
+    >
+    <div class="error">
+     <span ng-show="bookingSearchTimeDifferenceError" style="color: red"
+      >Start and end time should be atleast 30 mins apart</span
+     >
+    </div>
+   </div>
+
+   <small style="color: black">* Minimum Rental Time 30 minutes</small>
+   <button type="submit">Find a Ride</button>
+  </form>
+ </div>
+ <div id="datesValidation-snackbar"></div>
+</section>

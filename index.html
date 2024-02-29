@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="twoWheelWanderApp">
+ <head>
+  <base href="/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2WW Angular</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular-route.js"></script>
+
+  <!-- module -->
+  <script src="app.module.js"></script>
+
+  <!-- controllers -->
+  <script src="./navbar/navbarController.js"></script>
+  <script src="./signup/signupController.js"></script>
+  <script src="./signin/signinController.js"></script>
+  <script src="./home/homeController.js"></script>
+  <script src="./admin/managevehiclesController.js"></script>
+  <script src="./profile/profileController.js"></script>
+  <script src="./BookingPage/bookingPageController.js"></script>
+  <script src="./Orders/OrdersController.js"></script>
+  <script src="./admin/analyticsController.js"></script>
+
+  <!-- services -->
+  <script src="./services/localStorageService.js"></script>
+  <script src="./services/indexedDBService.js"></script>
+  <script src="./services/locationService.js"></script>
+  <script src="./services/snackbarService.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ </head>
+ <body>
+  <nav ng-include="'navbar/navbar.html'"></nav>
+
+  <main ng-view></main>
+
+  <snackbar></snackbar>
+ </body>
+</html>

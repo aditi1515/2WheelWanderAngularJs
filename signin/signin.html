@@ -1,0 +1,42 @@
+
+    <section class="signIn-container">
+    
+      <link rel="stylesheet" href="../signin/signin.css"></link>
+      
+        <form  class="signIn-form" name="signinForm" ng-submit = 'signIn(signinForm)' novalidate>
+          <h2>Welcome to <span>2WheelWander</span></h2>
+          <h4>Commuting made <span>Easy</span>, <span>Affordable</span> and <span>Quick</span></h4>
+          <div class="input-field">
+            <label for="email">Email :</label>
+            <input type="email" name="email" id="email" ng-required ="true" ng-model = "signinformdata.email"/>
+            <div class="error" >
+                <span ng-show = 'signinForm.email.$error.required && signinForm.email.$touched'> * Email required</span>
+               </div>
+               <div class="error" >
+                <span ng-show = 'signinForm.email.$error.email && signinForm.email.$touched'> * Enter a valid email</span>
+               </div>
+          </div>
+  
+          <div class="input-field">
+            <label for="password">Password :</label>
+            <input type="password" name="password" id="password" ng-required= "true" ng-model = "signinformdata.password" />
+           <div class="error" >
+            <span ng-show = 'signinForm.password.$error.required && signinForm.password.$touched'> * Password required</span>
+           </div>
+          </div>
+          {{signupForm}}
+          <button type="submit" ng-disabled='{{!signinForm.$valid}}' class='{{signinForm.$valid? "signIn-btn": "signIn-btn-disabled"}}'>Sign In</button>
+        <div class="error">
+            <span ng-show = 'userExistsError'>
+                * User don't exist
+            </span> </div>
+            <div class="error"> 
+
+                <span ng-show = 'incorrectPasswordError'>
+                    * Incorrect password
+                </span>
+            </div>
+        </form>
+        <snackbar></snackbar>
+    </section>
+ 
